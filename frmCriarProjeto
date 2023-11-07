@@ -1,0 +1,82 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Data.SqlClient;
+
+namespace CollaboraPro2
+{
+    public partial class frmCriarProjeto : Form
+
+    {
+        string stringConexao = "Data Source=localhost;Initial Catalog=Projeto_Gestao;User ID=sa;Password=123456";
+
+
+        public frmCriarProjeto()
+        {
+            InitializeComponent();
+
+        }
+
+        private void frmCriarProjeto_Load_1(object sender, EventArgs e)
+        {
+            TestarConexao();
+        }
+
+
+        private void TestarConexao()
+        {
+            SqlConnection conexao = new SqlConnection(stringConexao);
+
+            try
+            {
+                conexao.Open();
+                conexao.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro: " + ex.ToString());
+                Application.Exit();
+            }
+        }
+
+      
+
+        private void btoExcluir_Click(object sender, EventArgs e)
+        {
+            string sql = "DELETE INTO Projeto WHERE Projeto_Gestao " +
+             "(Nome_Projeto, Tipo_Projeto, Data_Inicio_Projeto, Data_Fim_Projeto,Status_Projeto,Resumo_Projeto,Riscos_Projeto,Orçamento_Projeto,Recursos_Projeto)" +
+             "values" +
+             "('" + txtNomeProjeto.Text + "', " + txtTipo.Text + ", " + txtDataInicio.Text + ", " + txtDataTermino.Text + ", '" + cboStatus.Text + "', " + txtResumo.Text + ",  " + txtRiscos.Text + ", '" + txtOrc.Text + "', '" + txtRecursos.Text + "')" +
+             "select scope_identity()";
+
+            SqlConnection conexao = new SqlConnection(stringConexao);
+            SqlCommand cmd = new SqlCommand(sql, conexao);
+            cmd.CommandType = CommandType.Text;
+
+            conexao.Open();
+
+
+        }
+
+        private void btoAdicionar_Click_1(object sender, EventArgs e)
+        {
+            string sql = "INSERT INTO Projeto " +
+               "(Nome_Projeto, Tipo_Projeto, Data_Inicio_Projeto, Data_Fim_Projeto,Status_Projeto,Resumo_Projeto,Riscos_Projeto,Orçamento_Projeto,Recursos_Projeto)" +
+               "values" +
+               "('" + txtNomeProjeto.Text + "', " + txtTipo.Text + ", " + txtDataInicio.Text + ", " + txtDataTermino.Text + ", '" + cboStatus.Text + "', " + txtResumo.Text + ",  " + txtRiscos.Text + ", '" + txtOrc.Text + "', '" + txtRecursos.Text + "')" +
+               "select scope_identity()";
+
+            SqlConnection conexao = new SqlConnection(stringConexao);
+            SqlCommand cmd = new SqlCommand(sql, conexao);
+            cmd.CommandType = CommandType.Text;
+
+            conexao.Open();
+        }
+    }
+    } 
